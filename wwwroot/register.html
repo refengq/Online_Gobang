@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/login.css">
+</head>
+
+<body>
+    <div class="nav">
+        网络五子棋对战游戏
+    </div>
+    <div class="login-container">
+        <!-- 登录界面的对话框 -->
+        <div class="login-dialog">
+            <!-- 提示信息 -->
+            <h3>注册</h3>
+            <!-- 这个表示一行 -->
+            <div class="row">
+                <span>用户名</span>
+                <input type="text" id="user_name" name="username">
+            </div>
+            <!-- 这是另一行 -->
+            <div class="row">
+                <span>密码</span>
+                <input type="password" id="password" name="password">
+            </div>
+            <!-- 提交按钮 -->
+            <div class="row">
+                <button id="submit" onclick="reg()">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script>
+        //1 给按钮添加点击事件,调用注册函数
+        //2 封装实现注册函数
+        function reg() {
+            var reg_info = {
+                username: document.getElementById("user_name").value,
+                password: document.getElementById("password").value
+            };
+            $.ajax({
+                url: "/reg",
+                type: "POST",
+                data: JSON.stringify(reg_info),
+                success: function (res) {
+                    if (res.result == false) {
+                        /*alert(res.reason);
+                        document.getElementById("password").value = "";
+                        document.getElementById("user_name").value = "";*/
+                    }
+                    else {
+                        alert(res.reason);
+                        window.location.assign("/login.html");
+                    }
+                },
+                error: function (xhr, status, error) { // 错误回调函数
+                    alert(JSON.stringify(xhr));
+                  // alert(res.reason);
+                    document.getElementById("password").value = "";
+                    document.getElementById("user_name").value = "";
+                }
+            })
+        }
+        //获取数据->json
+        //ajax向后台发送用户注册请求
+        //成功返回登陆页面
+        //失败清空框+错误原因
+    </script>
+</body>
+
+</html>
